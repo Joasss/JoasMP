@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/Joasss/electron-music-player#readme",
   "devDependencies": {
-    "electron": "^19.0.9"
+    "electron": "^19.0.9",
+    "flux": "^4.0.3"
   },
   "dependencies": {
     "@electron/remote": "^2.0.8"

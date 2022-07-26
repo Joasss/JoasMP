@@ -1,5 +1,5 @@
-const { dialog } = require('electron');
+const { ipcRenderer, ipcMain } = require('electron');
 
-document.getElementById('select').addEventListener('click', function (event) {
-    console.log("clicked!!")
-})
+document.getElementById('select').onclick = () => {
+  ipcRenderer.send('select-file')
+}
