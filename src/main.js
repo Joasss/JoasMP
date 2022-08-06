@@ -5,6 +5,7 @@ const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
         heigth: 600,
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -28,17 +29,3 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     if (window.process !== 'darwin') app.quit();
 });
-
-ipcMain.on('select-file', event => {
-    dialog.showOpenDialog({ 
-        properties: ['openFile', 'multiSelections'],
-        title: "Select a song to play",
-        filters: [
-            { name: "Songs", extensions: ['mp3'] }
-        ]
-    }).then(file => {
-        if (file.canceled === true) ipcMain.send('file', 'No file returned.');
-        console.log(file)
-    })
-    console.log("Recieved request to open file dialog.");
-})
