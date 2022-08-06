@@ -3,15 +3,26 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
-  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
+  <script src="assets/js/selectFile.js"></script>
   <title>Music Player</title>
 </head>
 
 <body>
-  <button id="select">Select a File</button>
-  <p id="song">No song loaded</p>
+
+  <button onclick="openFile()">Select a File</button>
+  <p id="song">Nothing Playing</p>
+  <a id="playPause" onclick="playPause()">play</a>
+
+  <a onclick="stopPlaying()">stop</a>
+
+  <input type="range" min="0" max="100" value="100" onchange="volume()" id="volumeRange">
+  <p id="volumeText">100</p>
+
+  <p id="point">0:00 / 2:57</p>
+  <progress id="progress-bar" max="100" value="0">amogus</progress>
+
+  <a id="repeat" onclick="setRepeat()">Repeat Off</a>
+
 </body>
-<script src="./renderer.js"></script>
 
 </html>

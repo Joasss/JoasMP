@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain, dialog, ipcRenderer } = require('electron');
+const { app, BrowserWindow, webContents } = require('electron');
+require('@electron/remote/main').initialize();
 
 // Create the electron window.
 const createWindow = () => {
@@ -9,11 +10,16 @@ const createWindow = () => {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
+            enableRemoteModule: true
         }
     });
 
+    require('@electron/remote/main').enable(win.webContents);
+
     win.webContents.openDevTools();
-    win.loadFile('index.html');
+    win.loadFile('src/index.html');
+
+    require('@electron/remote/main').enable(win.webContents);
 }
 
 // Create the window when the app starts.
