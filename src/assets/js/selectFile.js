@@ -203,7 +203,7 @@ function skipSong() {
 
                 const titleText = document.getElementById("song");
                 if (tag.tags.title) titleText.innerHTML = tag.tags.title;
-                if (!tag.tags.title) titleText.innerHTML = basename(queue[0]);
+                if (!tag.tags.title) titleText.innerHTML = basename(queue[1]);
                     
                 const artist = document.getElementById("artist");
                 if (tag.tags.artist) artist.innerHTML = tag.tags.artist;

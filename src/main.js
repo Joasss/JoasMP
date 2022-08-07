@@ -17,7 +17,6 @@ const createWindow = () => {
 
     require('@electron/remote/main').enable(win.webContents);
 
-    win.webContents.openDevTools();
     win.loadFile('src/index.html');
 
     require('@electron/remote/main').enable(win.webContents);
@@ -34,5 +33,5 @@ app.whenReady().then(() => {
 
 // Close the app when all windows are closed.
 app.on('window-all-closed', () => {
-    if (window.process !== 'darwin') app.quit();
+    if (win.process !== 'darwin') app.quit();
 });

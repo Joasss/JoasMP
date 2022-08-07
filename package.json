@@ -27,14 +27,14 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.65",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.65",
     "@electron-forge/maker-zip": "^6.0.0-beta.65",
-    "@electron/remote": "^2.0.8",
     "electron": "^19.0.9",
     "electron-builder": "^23.3.3",
-    "flux": "^4.0.3",
-    "jsmediatags": "^3.9.7"
+    "flux": "^4.0.3"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "@electron/remote": "^2.0.8",
+    "jsmediatags": "^3.9.7"
   },
   "config": {
     "forge": {
