@@ -229,3 +229,9 @@ function skipSong() {
         return;
     } 
 }
+
+function toggleVolume() {
+    const volume = document.getElementById("volume");
+
+    volume.classList.toggle("show")
+}

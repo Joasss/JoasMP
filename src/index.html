@@ -13,8 +13,7 @@
 <body>
 
     <div class="img">
-        <img id="albumCover"
-            src="https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png"
+        <img id="albumCover" src="https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png"
             width="250px"><br>
         <button class="button" onclick="openFile()">Play from File(s)</button>
     </div>
@@ -39,7 +38,12 @@
             <a title="Stop Queue" onclick="stopPlaying()"><i class="fa-solid fa-stop"></i></a>
             <a title="Pause/Resume" id="playPause" onclick="playPause()"><i class="fa-solid fa-circle-pause"></i></a>
             <a title="Skip Song" id="skip" onclick="skipSong()"><i class="fa-solid fa-forward"></i></a>
-            <a title="Volume" style="margin-right: 0px;"><i class="fa-solid fa-volume-high"></i></a>
+            <a onclick="toggleVolume()" title="Volume" style="margin-right: 0px;"><i class="fa-solid fa-volume-high"></i></a>
+        </div>
+
+        <div id="volume" class="volume">
+            <input type="range" min="0" max="100" value="100" onchange="volume()" id="volumeRange">
+            <p id="volumeText" style="margin-top: 5px;">100</p>
         </div>
 
     </div>
