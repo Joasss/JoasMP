@@ -5,41 +5,53 @@ const { basename } = require("path");
 
 let player;
 let repeatMode = "off";
+let queue = [];
 
 async function openFile() {
     const file = await dialog.showOpenDialog(currentWindow, {
         filters: [
             {
                 name: 'Music files',
-                extensions: ['mp3', 'wav']
+                extensions: ['mp3', 'wav'],
             }
+        ],
+        properties: [
+            "multiSelections",
         ]
     });
 
-    if (!file) return
-    const audioFile = new Audio(file.filePaths[0]);
-    if (player) { player.pause(); }
-    player = audioFile;
-    player.play();
+    if (!file) return;
 
-    jsmt.read(file.filePaths[0], {
-        onSuccess: function (tag) {
+    file.filePaths.forEach(item => {
+        if (!player) {
+            const audioFile = new Audio(item);
+            if (player) { player.pause(); }
+            player = audioFile;
+            player.play();
 
-            const titleText = document.getElementById("song");
-            if (tag.tags.title) titleText.innerHTML = tag.tags.title;
-            if (!tag.tags.title) titleText.innerHTML = basename(file.filePaths[0]);
+            jsmt.read(item, {
+                onSuccess: function (tag) {
 
-            const playPauseButton = document.getElementById("playPause");
-            playPauseButton.innerHTML = "pause song";
+                    const titleText = document.getElementById("song");
+                    if (tag.tags.title) titleText.innerHTML = tag.tags.title;
+                    if (!tag.tags.title) titleText.innerHTML = basename(item);
 
-            setInterval(updatePoint, 1000);
-            setInterval(checkRepeat, 1000);
+                    const playPauseButton = document.getElementById("playPause");
+                    playPauseButton.innerHTML = "pause song";
 
-        },
-        onerror: function (err) {
-            console.log("There was an error reading the media tags!")
+                    setInterval(updatePoint, 1000);
+                    setInterval(checkRepeat, 1000);
+
+                },
+                onerror: function (err) {
+                    console.log("There was an error reading the media tags!")
+                }
+            });
+        } else {
+            queue.push(item);
         }
-    })
+    });
+
 }
 
 function playPause() {
@@ -61,8 +73,9 @@ function playPause() {
 function stopPlaying() {
     if (!player) return;
 
-    player = null;
     player.pause();
+    player = null;
+    queue = [];
 }
 
 function volume() {
@@ -77,6 +90,8 @@ function volume() {
 }
 
 function updatePoint() {
+    if (!player) return;
+
     const duration = player.duration;
     const currentPoint = player.currentTime;
 
@@ -100,14 +115,11 @@ function updatePoint() {
 }
 
 function setRepeat() {
+    if (!player) return;
+
     const repeatButton = document.getElementById("repeat");
     switch (repeatMode) {
         case "off":
-            repeatMode = "queue";
-            repeatButton.innerHTML = "Repeat Queue";
-            break;
-
-        case "queue":
             repeatMode = "song";
             repeatButton.innerHTML = "Repeat Song";
             break;
@@ -120,8 +132,79 @@ function setRepeat() {
 }
 
 function checkRepeat() {
+    if (!player) return;
+
     const duration = player.duration;
     const currentPoint = player.currentTime;
 
     if (currentPoint === duration && repeatMode === "song") player.play();
+    if (currentPoint === duration && repeatMode === "off") {
+        if (queue[0]) {
+            const audioFile = new Audio(queue[0]);
+            if (player) { player.pause(); }
+            player = audioFile;
+            player.play();
+    
+            jsmt.read(queue[0], {
+                onSuccess: function (tag) {
+    
+                    const titleText = document.getElementById("song");
+                    if (tag.tags.title) titleText.innerHTML = tag.tags.title;
+                    if (!tag.tags.title) titleText.innerHTML = basename(queue[0]);
+    
+                    const playPauseButton = document.getElementById("playPause");
+                    playPauseButton.innerHTML = "pause song";
+    
+                    setInterval(updatePoint, 1000);
+                    setInterval(checkRepeat, 1000);
+    
+                },
+                onerror: function (err) {
+                    console.log("There was an error reading the media tags!")
+                }
+            });
+
+            queue.shift();
+        } else {
+            player.pause();
+            player = null;
+        }  
+    }
+}
+
+function skipSong() {
+    if (!player) return;
+    player.pause();
+
+    if (queue[0]) {
+        const audioFile = new Audio(queue[0]);
+        if (player) { player.pause(); }
+        player = audioFile;
+        player.play();
+
+        jsmt.read(queue[0], {
+            onSuccess: function (tag) {
+
+                const titleText = document.getElementById("song");
+                if (tag.tags.title) titleText.innerHTML = tag.tags.title;
+                if (!tag.tags.title) titleText.innerHTML = basename(queue[0]);
+
+                const playPauseButton = document.getElementById("playPause");
+                playPauseButton.innerHTML = "pause song";
+
+                setInterval(updatePoint, 1000);
+                setInterval(checkRepeat, 1000);
+
+                queue.shift();
+
+            },
+            onerror: function (err) {
+                console.log("There was an error reading the media tags!")
+            }
+        });
+
+    } else {
+        player.pause();
+        player = null;
+    } 
 }
