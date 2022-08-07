@@ -6,6 +6,7 @@ const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
         heigth: 600,
+        title: "JoasLP",
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
