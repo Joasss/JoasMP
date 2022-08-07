@@ -2,29 +2,47 @@
 <html>
 
 <head>
-  <meta charset="UTF-8" />
-  <script src="assets/js/selectFile.js"></script>
-  <title>Music Player</title>
+    <meta charset="UTF-8" />
+    <script src="assets/js/selectFile.js"></script>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <title>Music Player</title>
+    <script src="https://kit.fontawesome.com/d5db5a9cd6.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-  <button onclick="openFile()">Select a File</button>
-  <p id="song">Nothing Playing</p>
-  <a id="playPause" onclick="playPause()">play</a>
+    <div class="img">
+        <img id="albumCover"
+            src="https://images.saymedia-content.com/.image/t_share/MTc0NDkxNzgyMzYzNDg5NjQw/vinyl-to-paper-how-to-write-an-album-review.jpg"
+            width="250px"><br>
+        <button class="button" onclick="openFile()">Play from File(s)</button>
+    </div>
 
-  <a onclick="stopPlaying()">stop</a>
+    <div class="bottom-controls">
+        <div class="info">
+            <h4 id="song">Nothing Playing</h4>
+            <p id="artist"></p>
+        </div>
 
-  <input type="range" min="0" max="100" value="100" onchange="volume()" id="volumeRange">
-  <p id="volumeText">100</p>
+        <div class="progress">
+            <progress id="progress-bar" max="100" value="0">amogus</progress>
+            <div class="time-wrapper">
+                <p id="current">0:00</p>
+                <p id="total">0:00</p>
+            </div>
+        </div>
 
-  <p id="point">0:00 / 0:00</p>
-  <progress id="progress-bar" max="100" value="0">amogus</progress>
+        <div class="main-controls">
+            <a title="Repeat" style="margin-left: 20px;" id="repeat" onclick="setRepeat()"><i
+                    class="fa-solid fa-repeat"></i></a>
+            <a title="Stop Queue" onclick="stopPlaying()"><i class="fa-solid fa-stop"></i></a>
+            <a title="Pause/Resume" id="playPause" onclick="playPause()"><i class="fa-solid fa-circle-pause"></i></a>
+            <a title="Skip Song" id="skip" onclick="skipSong()"><i class="fa-solid fa-forward"></i></a>
+            <a title="Volume" style="margin-right: 0px;"><i class="fa-solid fa-volume-high"></i></a>
+        </div>
 
-  <a id="repeat" onclick="setRepeat()">Repeat Off</a>
-
-  <a id="skip" onclick="skipSong()">Skip</a>
-
+    </div>
 </body>
 
 </html>

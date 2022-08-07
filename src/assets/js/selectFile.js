@@ -36,8 +36,14 @@ async function openFile() {
                     if (tag.tags.title) titleText.innerHTML = tag.tags.title;
                     if (!tag.tags.title) titleText.innerHTML = basename(item);
 
+                    const artist = document.getElementById("artist");
+                    if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
+
                     const playPauseButton = document.getElementById("playPause");
-                    playPauseButton.innerHTML = "pause song";
+                    playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+
+                    const recordIcon = document.getElementById("albumCover");
+                    if (tag.tags.picture) recordIcon.src = tag.tags.picture;
 
                     setInterval(updatePoint, 1000);
                     setInterval(checkRepeat, 1000);
@@ -61,12 +67,12 @@ function playPause() {
 
     if (player.paused) {
         player.play();
-        playPauseButton.innerHTML = "Pause";
+        playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
     }
 
     else if (!player.paused) {
         player.pause();
-        playPauseButton.innerHTML = "Play";
+        playPauseButton.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
     }
 }
 
@@ -101,11 +107,15 @@ function updatePoint() {
     durationDate.setSeconds(duration);
     currentDate.setSeconds(currentPoint);
 
-    const point = document.getElementById("point");
+    const point = document.getElementById("current");
+    const total = document.getElementById("total");
+    
     point.innerHTML = `${currentDate.getMinutes()}:${currentDate.getSeconds().toLocaleString('en-US', {
         minimumIntegerDigits: 2,
         useGrouping: false
-    })} / ${durationDate.getMinutes()}:${durationDate.getSeconds().toLocaleString('en-US', {
+    })}`;
+
+    total.innerHTML = `${durationDate.getMinutes()}:${durationDate.getSeconds().toLocaleString('en-US', {
         minimumIntegerDigits: 2,
         useGrouping: false
     })}`;
@@ -121,12 +131,12 @@ function setRepeat() {
     switch (repeatMode) {
         case "off":
             repeatMode = "song";
-            repeatButton.innerHTML = "Repeat Song";
+            repeatButton.style.color = 'rgb(19, 89, 58)';
             break;
 
         case "song":
             repeatMode = "off";
-            repeatButton.innerHTML = "Repeat Off";
+            repeatButton.style.color = 'black';
             break;
     }
 }
@@ -151,13 +161,19 @@ function checkRepeat() {
                     const titleText = document.getElementById("song");
                     if (tag.tags.title) titleText.innerHTML = tag.tags.title;
                     if (!tag.tags.title) titleText.innerHTML = basename(queue[0]);
+                    
+                    const artist = document.getElementById("artist");
+                    if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
     
                     const playPauseButton = document.getElementById("playPause");
-                    playPauseButton.innerHTML = "pause song";
+                    playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
     
                     setInterval(updatePoint, 1000);
                     setInterval(checkRepeat, 1000);
     
+                    const recordIcon = document.getElementById("albumCover");
+                    if (tag.tags.picture) recordIcon.src = tag.tags.picture;
+                    
                 },
                 onerror: function (err) {
                     console.log("There was an error reading the media tags!")
@@ -188,14 +204,20 @@ function skipSong() {
                 const titleText = document.getElementById("song");
                 if (tag.tags.title) titleText.innerHTML = tag.tags.title;
                 if (!tag.tags.title) titleText.innerHTML = basename(queue[0]);
+                    
+                const artist = document.getElementById("artist");
+                if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
 
                 const playPauseButton = document.getElementById("playPause");
-                playPauseButton.innerHTML = "pause song";
+                playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
 
                 setInterval(updatePoint, 1000);
                 setInterval(checkRepeat, 1000);
 
                 queue.shift();
+
+                const recordIcon = document.getElementById("albumCover");
+                if (tag.tags.picture) recordIcon.src = tag.tags.picture;
 
             },
             onerror: function (err) {
@@ -204,7 +226,6 @@ function skipSong() {
         });
 
     } else {
-        player.pause();
-        player = null;
+        return;
     } 
 }

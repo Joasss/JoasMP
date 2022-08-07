@@ -1,0 +1,73 @@
+progress {
+    width: 100%;
+}
+
+.progress {
+    width: 90%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.time-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+html,
+body {
+    margin: 0;
+    font-family: 'Lato';
+    transition: 0.4s;
+}
+
+.main-controls {
+    font-size: 45px;
+    cursor: default;
+    text-align: center;
+}
+
+.main-controls a {
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.main-controls a:hover {
+    color: rgb(29, 36, 54);
+}
+
+.info {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.img {
+    text-align: center;
+}
+
+.button {
+    color: white;
+    margin-top: 20px;
+    font-size: 20px;
+    background-color: rgb(41, 126, 196);
+    --bs-clr: rgb(34, 108, 168);
+    box-shadow: 0px 5px 0px var(--bs-clr);
+    border: none;
+    padding: 10px 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.button:hover {
+    transform: translateY(2px);
+    box-shadow: 0px 3px 0px var(--bs-clr);
+}
+
+.button:active {
+    transform: translateY(5px);
+    box-shadow: none;
+}
