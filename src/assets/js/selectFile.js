@@ -7,6 +7,7 @@ const { title } = require('process');
 let player;
 let repeatMode = "off";
 let queue = [];
+let queuePos = 0;
 
 async function openFile() {
     const file = await dialog.showOpenDialog(currentWindow, {
