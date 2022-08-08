@@ -2,21 +2,11 @@ progress {
     width: 100%;
 }
 
-.progress {
-    width: 90%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
 
 .timebar {
-    width: 100%;
+    width: 95%;
 }
 
-.time-wrapper {
-    display: flex;
-    justify-content: space-between;
-}
 
 html,
 body {
@@ -84,8 +74,31 @@ body {
 
 .volume {
     text-align: center;
-    margin-top: 30px;
-    display: none;
+    width: 15%;
+    display: flex;
+    height: fit-content;
+    align-items: center;
+}
+
+.volume p {
+    margin: 0;
+    margin-left: 10px;
+}
+
+.bars {
+    display: flex;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.progress {
+    width: 100%;
+}
+.time-wrapper {
+    display: flex;
+    width: 95%;
+    justify-content: space-between;
 }
 
 .show {

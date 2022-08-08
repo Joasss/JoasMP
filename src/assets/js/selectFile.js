@@ -2,7 +2,6 @@ const { dialog, getCurrentWindow } = require('@electron/remote')
 const currentWindow = getCurrentWindow();
 const jsmt = require('jsmediatags');
 const { basename } = require("path");
-const { title } = require('process');
 
 let player;
 let repeatMode = "off";
@@ -119,7 +118,7 @@ function volume() {
     const volumeInput = document.getElementById("volumeRange");
     const volumeText = document.getElementById("volumeText");
 
-    volumeText.innerHTML = volumeInput.value;
+    volumeText.innerHTML = `${volumeInput.value}%`;
 
     player.volume = volumeInput.value / 100;
     volumeCount = Math.round(volumeInput.value / 100);
@@ -216,11 +215,6 @@ function backSong() {
     if (queue[queuePos - 1]) setQueuePosition(queuePos - 1);
 }
 
-function toggleVolume() {
-    const volume = document.getElementById("volume");
-    volume.classList.toggle("show")
-}
-
 function seek() {
     const seekBar = document.getElementById("progress-bar");
     const value = seekBar.value;
@@ -244,7 +238,7 @@ async function shuffle() {
     queue = await shuffleArray(queue);
 }
 
-function setQueuePosition(position) {
+function setQueuePosition(position) {   
     queuePos = position;
     if (player) { player.pause(); }
 

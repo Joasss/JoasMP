@@ -24,12 +24,20 @@
             <p id="artist"></p>
         </div>
 
-        <div class="progress">
-            <input oninput="seek()" class="timebar" type="range" id="progress-bar" min="0" max="100" value="0">
-            <div class="time-wrapper">
-                <p id="current">--:--</p>
-                <p id="total">--:--</p>
+        <div class="bars">
+            <div class="progress">
+                <input oninput="seek()" class="timebar" type="range" id="progress-bar" min="0" max="100" value="0">
+                <div class="time-wrapper">
+                    <p id="current">--:--</p>
+                    <p id="total">--:--</p>
+                </div>
             </div>
+            <div id="volume" class="volume">
+                <input type="range" min="0" max="100" value="100" onchange="volume()" id="volumeRange">
+                <p id="volumeText">100%</p>
+            </div>
+        </div>
+        <div class="bars">
         </div>
 
         <div class="main-controls">
@@ -40,14 +48,6 @@
             <a title="Pause/Resume" id="playPause" onclick="playPause()"><i class="fa-solid fa-circle-pause"></i></a>
             <a title="Skip Song" id="skip" onclick="skipSong()"><i class="fa-solid fa-forward"></i></a>
             <a title="Shuffle Queue" id="shuffle" onclick="shuffle()"><i class="fa-solid fa-shuffle"></i></a>
-            <a onclick="toggleVolume()" title="Volume" style="margin-right: 0px;"><i
-                    class="fa-solid fa-volume-high"></i></a>
-        </div>
-
-        <div id="volume" class="volume">
-            <input type="range" min="0" max="100" value="100" onchange="volume()" id="volumeRange">
-            <p id="volumeText" style="margin-top: 5px;">100</p> 
-            <!-- doenst work new song -->
         </div>
 
     </div>
