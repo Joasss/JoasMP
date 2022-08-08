@@ -91,27 +91,6 @@ function playPause() {
     }
 }
 
-function stopPlaying() {
-    if (!player) return;
-
-    player.pause();
-    player = null;
-    queue = [];
-    queuePos = 0;
-    const titleText = document.getElementById("song");
-    titleText.innerHTML = "";
-    const artist = document.getElementById("artist");
-    artist.innerHTML = "";
-    const progressBar = document.getElementById("progress-bar");
-    progressBar.value = 0;
-    const point = document.getElementById("current");
-    const total = document.getElementById("total");
-    point.innerHTML = "0:00";
-    total.innerHTML = "0:00";
-    const recordIcon = document.getElementById("albumCover");
-    recordIcon.src = "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png"
-}
-
 function volume() {
     if (!player) return;
 
@@ -165,16 +144,16 @@ function setRepeat() {
     const repeatButton = document.getElementById("repeat");
     switch (repeatMode) {
         case "off":
-            repeatMode = "song";
-            repeatButton.style.color = 'green';
-            break;
-        case "song":
             repeatMode = "queue";
-            repeatButton.style.color = 'red';
+            repeatButton.style.color = 'rgb(129, 255, 139)';
             break;
         case "queue":
+            repeatMode = "song";
+            repeatButton.style.color = 'rb(169, 255, 179)';
+            break;
+        case "song":
             repeatMode = "off";
-            repeatButton.style.color = 'black';
+            repeatButton.style.color = 'white';
             break;
     }
 }
@@ -238,7 +217,7 @@ async function shuffle() {
     queue = await shuffleArray(queue);
 }
 
-function setQueuePosition(position) {   
+function setQueuePosition(position) {
     queuePos = position;
     if (player) { player.pause(); }
 
@@ -251,6 +230,7 @@ function setQueuePosition(position) {
         onSuccess: function (tag) {
 
             const titleText = document.getElementById("song");
+            console.log(basename(queue[position]))
             titleText.innerHTML = basename(queue[position]);
 
             const artist = document.getElementById("artist");
@@ -280,4 +260,25 @@ function setQueuePosition(position) {
             console.log("There was an error reading the media tags!")
         }
     });
+}
+
+function stopPlaying() {
+    if (!player) return;
+
+    player.pause();
+    player = null;
+    queue = [];
+    queuePos = 0;
+    const titleText = document.getElementById("song");
+    titleText.innerHTML = "";
+    const artist = document.getElementById("artist");
+    artist.innerHTML = "";
+    const progressBar = document.getElementById("progress-bar");
+    progressBar.value = 0;
+    const point = document.getElementById("current");
+    const total = document.getElementById("total");
+    point.innerHTML = "0:00";
+    total.innerHTML = "0:00";
+    const recordIcon = document.getElementById("albumCover");
+    recordIcon.src = "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png"
 }

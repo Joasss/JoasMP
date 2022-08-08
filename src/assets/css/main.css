@@ -13,6 +13,8 @@ body {
     margin: 0;
     font-family: 'Lato';
     transition: 0.4s;
+    color: white;
+    background-color: black;
 }
 
 .main-controls {
@@ -21,19 +23,35 @@ body {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    max-width: 40%;
-    min-width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
     justify-content: space-between;
     display: flex;
 }
 
 .main-controls a {
     cursor: pointer;
-    margin-right: 10px;
+    font-size: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.13);
+}
+
+.main a {
+    font-size: 40px !important;
 }
 
 .main-controls a:hover {
-    color: rgb(29, 36, 54);
+    color: rgb(189, 201, 207);
+}
+
+.left {
+    width: 15%;
+}
+.right {
+    width: 15%;
 }
 
 .info {
@@ -46,43 +64,19 @@ body {
     text-align: center;
 }
 
-.button {
-    color: white;
-    margin-top: 20px;
-    font-size: 20px;
-    background-color: rgb(41, 126, 196);
-    --bs-clr: rgb(34, 108, 168);
-    box-shadow: 0px 5px 0px var(--bs-clr);
-    border: none;
-    padding: 10px 20px;
-    margin-left: 5px;
-    margin-right: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.button:hover {
-    transform: translateY(2px);
-    box-shadow: 0px 3px 0px var(--bs-clr);
-}
-
-.button:active {
-    transform: translateY(5px);
-    box-shadow: none;
-}
-
 .volume {
     text-align: center;
     width: 15%;
-    display: flex;
+    display: inline;
     height: fit-content;
-    align-items: center;
+}
+
+.volume input {
+    width: 100%;
 }
 
 .volume p {
     margin: 0;
-    margin-left: 10px;
 }
 
 .bars {
@@ -98,6 +92,7 @@ body {
 .time-wrapper {
     display: flex;
     width: 95%;
+    margin-left: 5px;
     justify-content: space-between;
 }
 
@@ -106,7 +101,11 @@ body {
 }
 
 .bottom-controls {
-    position: fixed;
     width: 100%;
-    bottom: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 50px;
+    padding-top: 25px;
+    background-color: rgb(26, 26, 26);
 }
