@@ -8,6 +8,7 @@ let player;
 let repeatMode = "off";
 let queue = [];
 let queuePos = 0;
+let volumeCount = 1;
 
 async function openFile() {
     const file = await dialog.showOpenDialog(currentWindow, {
@@ -30,6 +31,9 @@ async function openFile() {
             if (player) { player.pause(); }
             player = audioFile;
             player.play();
+            player.volume = volumeCount;
+            queuePos = 0;
+            queue.push(item)
 
             jsmt.read(item, {
                 onSuccess: function (tag) {
@@ -39,6 +43,7 @@ async function openFile() {
                     if (!tag.tags.title) titleText.innerHTML = basename(item);
 
                     const artist = document.getElementById("artist");
+                    artist.innerHTML = "";
                     if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
 
                     const playPauseButton = document.getElementById("playPause");
@@ -93,6 +98,7 @@ function stopPlaying() {
     player.pause();
     player = null;
     queue = [];
+    queuePos = 0;
     const titleText = document.getElementById("song");
     titleText.innerHTML = "";
     const artist = document.getElementById("artist");
@@ -116,6 +122,7 @@ function volume() {
     volumeText.innerHTML = volumeInput.value;
 
     player.volume = volumeInput.value / 100;
+    volumeCount = Math.round(volumeInput.value / 100);
 }
 
 function updatePoint() {
@@ -160,10 +167,13 @@ function setRepeat() {
     switch (repeatMode) {
         case "off":
             repeatMode = "song";
-            repeatButton.style.color = 'rgb(19, 89, 58)';
+            repeatButton.style.color = 'green';
             break;
-
         case "song":
+            repeatMode = "queue";
+            repeatButton.style.color = 'red';
+            break;
+        case "queue":
             repeatMode = "off";
             repeatButton.style.color = 'black';
             break;
@@ -178,108 +188,102 @@ function checkRepeat() {
 
     if (currentPoint === duration && repeatMode === "song") player.play();
     if (currentPoint === duration && repeatMode === "off") {
-        if (queue[0]) {
-            const audioFile = new Audio(queue[0]);
-            if (player) { player.pause(); }
-            player = audioFile;
-            player.play();
+        if (queue[queuePos + 1]) {
+            queuePos = queuePos + 1;
+            setQueuePosition(queuePos);
+        } else stopPlaying();
 
-            jsmt.read(queue[0], {
-                onSuccess: function (tag) {
+    } else if (currentPoint === duration && repeatMode === "queue") {
+        if (queue[queuePos + 1]) {
+            queuePos = queuePos + 1;
 
-                    const titleText = document.getElementById("song");
-                    titleText.innerHTML = basename(queue[0]);
-
-                    const artist = document.getElementById("artist");
-                    if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
-
-                    const playPauseButton = document.getElementById("playPause");
-                    playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
-
-                    setInterval(updatePoint, 1000);
-                    setInterval(checkRepeat, 1000);
-
-                    const recordIcon = document.getElementById("albumCover");
-                    if (tag.tags.picture) {
-                        const { data, format } = tag.tags.picture;
-                        let base64String = "";
-                        for (let i = 0; i < data.length; i++) {
-                            base64String += String.fromCharCode(data[i]);
-                        }
-                        recordIcon.src = `data:${data.format};base64,${window.btoa(base64String)}`;
-                    } else {
-                        recordIcon.src = "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png";
-                    }
-
-                },
-                onerror: function (err) {
-                    console.log("There was an error reading the media tags!")
-                }
-            });
-
-            queue.shift();
+            setQueuePosition(queuePos);
         } else {
-            player.pause();
-            player = null;
+            queuePos = 0;
+            setQueuePosition(queuePos);
         }
     }
 }
 
 function skipSong() {
     if (!player) return;
-    if (!queue[0]) return;
-    player.pause();
+    if (queue[queuePos + 1]) return setQueuePosition(queuePos + 1);
+    if (!queue[queuePos + 1]) return setQueuePosition(0);
+}
 
-    if (queue[0]) {
-        const audioFile = new Audio(queue[0]);
-        if (player) { player.pause(); }
-        player = audioFile;
-        player.play();
-        console.log(queue[0])
-
-        jsmt.read(queue[0], {
-            onSuccess: function (tag) {
-
-                const titleText = document.getElementById("song");
-                titleText.innerHTML = basename(queue[0]);
-
-                const artist = document.getElementById("artist");
-                if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
-                if (!tag.tags.artist) artist.innerHTML = "";
-
-                const playPauseButton = document.getElementById("playPause");
-                playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
-
-                setInterval(updatePoint, 1000);
-                setInterval(checkRepeat, 1000);
-
-                queue.shift();
-
-                const recordIcon = document.getElementById("albumCover");
-                if (tag.tags.picture) {
-                    const { data, format } = tag.tags.picture;
-                    let base64String = "";
-                    for (let i = 0; i < data.length; i++) {
-                        base64String += String.fromCharCode(data[i]);
-                    }
-                    recordIcon.src = `data:${data.format};base64,${window.btoa(base64String)}`;
-                } else {
-                    recordIcon.src = "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png";
-                }
-
-            },
-            onerror: function (err) {
-                console.log("There was an error reading the media tags!")
-            }
-        });
-
-    } else {
-        return;
-    }
+function backSong() {
+    if (!player) return;
+    if (queue[queuePos - 1]) setQueuePosition(queuePos - 1);
 }
 
 function toggleVolume() {
     const volume = document.getElementById("volume");
-
     volume.classList.toggle("show")
+}
+
+function seek() {
+    const seekBar = document.getElementById("progress-bar");
+    const value = seekBar.value;
+    const newSeconds = Math.round((value / 100) * player.duration);
+    if (!player) seekBar.value = 0;
+
+    player.currentTime = newSeconds;
+}
+
+async function shuffle() {
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    }
+    queuePos = 0;
+    queue = await shuffleArray(queue);
+}
+
+function setQueuePosition(position) {
+    queuePos = position;
+    if (player) { player.pause(); }
+
+    const audioFile = new Audio(queue[position]);
+    player = audioFile;
+    player.play();
+    player.volume = volumeCount;
+
+    jsmt.read(queue[position], {
+        onSuccess: function (tag) {
+
+            const titleText = document.getElementById("song");
+            titleText.innerHTML = basename(queue[position]);
+
+            const artist = document.getElementById("artist");
+            if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
+            if (!tag.tags.artist) artist.innerHTML = "";
+
+            const playPauseButton = document.getElementById("playPause");
+            playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+
+            setInterval(updatePoint, 1000);
+            setInterval(checkRepeat, 1000);
+
+            const recordIcon = document.getElementById("albumCover");
+            if (tag.tags.picture) {
+                const { data, format } = tag.tags.picture;
+                let base64String = "";
+                for (let i = 0; i < data.length; i++) {
+                    base64String += String.fromCharCode(data[i]);
+                }
+                recordIcon.src = `data:${data.format};base64,${window.btoa(base64String)}`;
+            } else {
+                recordIcon.src = "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png";
+            }
+
+        },
+        onerror: function (err) {
+            console.log("There was an error reading the media tags!")
+        }
+    });
 }

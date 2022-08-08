@@ -25,10 +25,10 @@
         </div>
 
         <div class="progress">
-            <progress id="progress-bar" max="100" value="0">amogus</progress>
+            <input oninput="seek()" class="timebar" type="range" id="progress-bar" min="0" max="100" value="0">
             <div class="time-wrapper">
-                <p id="current">0:00</p>
-                <p id="total">0:00</p>
+                <p id="current">--:--</p>
+                <p id="total">--:--</p>
             </div>
         </div>
 
@@ -36,17 +36,29 @@
             <a title="Repeat" style="margin-left: 20px;" id="repeat" onclick="setRepeat()"><i
                     class="fa-solid fa-repeat"></i></a>
             <a title="Stop Queue" onclick="stopPlaying()"><i class="fa-solid fa-stop"></i></a>
+            <a title="Previous Song" id="skip" onclick="backSong()"><i class="fa-solid fa-backward"></i></a>
             <a title="Pause/Resume" id="playPause" onclick="playPause()"><i class="fa-solid fa-circle-pause"></i></a>
             <a title="Skip Song" id="skip" onclick="skipSong()"><i class="fa-solid fa-forward"></i></a>
-            <a onclick="toggleVolume()" title="Volume" style="margin-right: 0px;"><i class="fa-solid fa-volume-high"></i></a>
+            <a title="Shuffle Queue" id="shuffle" onclick="shuffle()"><i class="fa-solid fa-shuffle"></i></a>
+            <a onclick="toggleVolume()" title="Volume" style="margin-right: 0px;"><i
+                    class="fa-solid fa-volume-high"></i></a>
         </div>
 
         <div id="volume" class="volume">
             <input type="range" min="0" max="100" value="100" onchange="volume()" id="volumeRange">
-            <p id="volumeText" style="margin-top: 5px;">100</p>
+            <p id="volumeText" style="margin-top: 5px;">100</p> 
+            <!-- doenst work new song -->
         </div>
 
     </div>
+
+    <script>
+        document.body.onkeyup = function (e) {
+            if (e.keyCode == 32) {
+                playPause();
+            }
+        }
+    </script>
 </body>
 
 </html>

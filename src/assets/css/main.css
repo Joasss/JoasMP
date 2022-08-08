@@ -9,6 +9,10 @@ progress {
     margin-right: auto;
 }
 
+.timebar {
+    width: 100%;
+}
+
 .time-wrapper {
     display: flex;
     justify-content: space-between;
