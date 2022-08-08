@@ -6,7 +6,9 @@ const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
         heigth: 600,
-        title: "JoasLP",
+        minWidth: 325,
+        minHeight: 500,
+        title: "JoasMP",
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
@@ -33,5 +35,5 @@ app.whenReady().then(() => {
 
 // Close the app when all windows are closed.
 app.on('window-all-closed', () => {
-    if (win.process !== 'darwin') app.quit();
+    app.quit();
 });

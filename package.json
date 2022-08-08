@@ -1,6 +1,6 @@
 {
-  "name": "electron-music-player",
-  "version": "1.0.0",
+  "name": "joasmp",
+  "version": "1.1.0",
   "description": "An electron music player application made by Joa_sss.",
   "main": "src/main.js",
   "scripts": {
