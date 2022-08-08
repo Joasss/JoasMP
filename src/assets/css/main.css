@@ -14,7 +14,7 @@ body {
     font-family: 'Lato';
     transition: 0.4s;
     color: white;
-    background-color: black;
+    background-color: rgb(17, 17, 17);
 }
 
 .main-controls {
@@ -102,10 +102,46 @@ body {
 
 .bottom-controls {
     width: 100%;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
     padding-bottom: 50px;
     padding-top: 25px;
     background-color: rgb(26, 26, 26);
+    border-top: 1px solid rgba(255, 255, 255, 0.564);
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.app-title {
+    margin-bottom: 30px;
+}
+
+.song-info {
+    width: fit-content; 
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.filename {
+    margin: 5px;
+    color: rgb(190, 190, 190);
+    font-weight: bold;
+    text-align: center;
+}
+
+.title {
+    padding: 1px 50px 1px 50px;
+    text-align: center;
+    margin: 0px;
+}
+
+.artist-album {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
 }

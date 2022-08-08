@@ -38,15 +38,19 @@ async function openFile() {
                 onSuccess: function (tag) {
 
                     const titleText = document.getElementById("song");
+                    const fileText = document.getElementById("filename");
                     if (tag.tags.title) titleText.innerHTML = tag.tags.title;
-                    if (!tag.tags.title) titleText.innerHTML = basename(item);
+                    fileText.innerHTML = basename(item).toUpperCase();
+                    if (!tag.tags.title) titleText.innerHTML = basename(item, '.mp3' || '.wav');
 
-                    const artist = document.getElementById("artist");
-                    artist.innerHTML = "";
-                    if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
+                    const artist = document.getElementById("artistAlbum");
+                    artist.innerHTML = "No artist/album found.";
+                    if (tag.tags.artist) artist.innerHTML = `${tag.tags.artist}`;
+                    if (tag.tags.album) artist.innerHTML = `${tag.tags.album}`;
+                    if (tag.tags.album && tag.tags.artist) artist.innerHTML = `${tag.tags.artist} - ${tag.tags.album}`;
 
                     const playPauseButton = document.getElementById("playPause");
-                    playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+                    playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause fa-fw"></i>';
 
                     const recordIcon = document.getElementById("albumCover");
                     if (tag.tags.picture) {
@@ -82,12 +86,12 @@ function playPause() {
 
     if (player.paused) {
         player.play();
-        playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+        playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause fa-fw"></i>';
     }
 
     else if (!player.paused) {
         player.pause();
-        playPauseButton.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
+        playPauseButton.innerHTML = '<i class="fa-solid fa-circle-play fa-fw"></i>';
     }
 }
 
@@ -230,15 +234,19 @@ function setQueuePosition(position) {
         onSuccess: function (tag) {
 
             const titleText = document.getElementById("song");
-            console.log(basename(queue[position]))
-            titleText.innerHTML = basename(queue[position]);
+            const fileText = document.getElementById("filename");
+            if (tag.tags.title) titleText.innerHTML = tag.tags.title;
+            fileText.innerHTML = basename(queue[position]).toUpperCase();
+            if (!tag.tags.title) titleText.innerHTML =  basename(queue[position], '.mp3' || '.wav');
 
-            const artist = document.getElementById("artist");
-            if (tag.tags.artist) artist.innerHTML = tag.tags.artist;
-            if (!tag.tags.artist) artist.innerHTML = "";
+            const artist = document.getElementById("artistAlbum");
+            artist.innerHTML = "No artist/album found.";
+            if (tag.tags.artist) artist.innerHTML = `${tag.tags.artist}`;
+            if (tag.tags.album) artist.innerHTML = `${tag.tags.album}`;
+            if (tag.tags.album && tag.tags.artist) artist.innerHTML = `${tag.tags.artist} - ${tag.tags.album}`;
 
             const playPauseButton = document.getElementById("playPause");
-            playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+            playPauseButton.innerHTML = '<i class="fa-solid fa-circle-pause fa-fw"></i>';
 
             setInterval(updatePoint, 1000);
             setInterval(checkRepeat, 1000);

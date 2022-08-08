@@ -6,6 +6,7 @@
     <script src="assets/js/selectFile.js"></script>
     <link rel="stylesheet" href="assets/css/main.css">
     <title>JoasLP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://kit.fontawesome.com/d5db5a9cd6.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
@@ -14,51 +15,61 @@
 
     <div class="wrapper">
         <div class="img">
+            <h3 class="app-title">JoasMP</h3>
             <img id="albumCover" src="https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png"
                 width="250px"><br>
-            <button class="button" onclick="openFile()">Play from File(s)</button>
-            <h4 id="song">Nothing Playing</h4>
-            <p id="artist"></p>
         </div>
 
-        <div class="bottom-controls">
+        <div class="bottom">
 
-            <div class="bars">
-                <div class="progress">
-                    <input oninput="seek()" class="timebar" type="range" id="progress-bar" min="0" max="100" value="0">
-                    <div class="time-wrapper">
-                        <p id="current">--:--</p>
-                        <p id="total">--:--</p>
+            <div class="song-info">
+                <p id="filename" class="filename"></p>
+                <h4 id="song" class="title">No Song Playing</h4>
+                <p id="artistAlbum" class="artist-album"></p>
+            </div>
+            <div class="bottom-controls">
+
+                <div class="bars">
+                    <div class="progress">
+                        <input oninput="seek()" class="timebar" type="range" id="progress-bar" min="0" max="100"
+                            value="0">
+                        <div class="time-wrapper">
+                            <p id="current">--:--</p>
+                            <p id="total">--:--</p>
+                        </div>
+                    </div>
+                    <div id="volume" class="volume">
+                        <input type="range" min="0" max="100" value="100" oninput="volume()" id="volumeRange">
+                        <p id="volumeText">100%</p>
                     </div>
                 </div>
-                <div id="volume" class="volume">
-                    <input type="range" min="0" max="100" value="100" oninput="volume()" id="volumeRange">
-                    <p id="volumeText">100%</p>
+                <div class="bars">
                 </div>
+
+                <div class="main-controls">
+                    <div class="left">
+                        <a title="Repeat" id="repeat" onclick="setRepeat()"><i class="fa-solid fa-repeat fa-fw"></i></a>
+                        <a title="Stop Queue" onclick="stopPlaying()"><i class="fa-solid fa-stop fa-fw"></i></a>
+                    </div>
+
+                    <div class="main">
+                        <a title="Previous Song" id="skip" onclick="backSong()"><i
+                                class="fa-solid fa-backward fa-fw"></i></a>
+                        <a title="Pause/Resume" id="playPause" onclick="playPause()"><i
+                                class="fa-solid fa-circle-pause fa-fw"></i></a>
+                        <a title="Skip Song" id="skip" onclick="skipSong()"><i
+                                class="fa-solid fa-forward fa-fw"></i></a>
+                    </div>
+
+                    <div class="right">
+                        <a title="Shuffle Queue" id="shuffle" onclick="shuffle()"><i
+                                class="fa-solid fa-shuffle fa-fw"></i></a>
+                        <a title="View Queue" id="queue"><i class="fa-solid fa-bars fa-fw"></i></a>
+                    </div>
+                    <button class="button" onclick="openFile()">Play from File(s)</button>
+                </div>
+
             </div>
-            <div class="bars">
-            </div>
-
-            <div class="main-controls">
-                <div class="left">
-                    <a title="Repeat" id="repeat" onclick="setRepeat()"><i
-                            class="fa-solid fa-repeat fa-fw"></i></a>
-                    <a title="Stop Queue" onclick="stopPlaying()"><i class="fa-solid fa-stop fa-fw"></i></a>
-                </div>
-
-                <div class="main">
-                    <a title="Previous Song" id="skip" onclick="backSong()"><i class="fa-solid fa-backward fa-fw"></i></a>
-                    <a title="Pause/Resume" id="playPause" onclick="playPause()"><i
-                            class="fa-solid fa-circle-pause fa-fw"></i></a>
-                    <a title="Skip Song" id="skip" onclick="skipSong()"><i class="fa-solid fa-forward fa-fw"></i></a>
-                </div>
-
-                <div class="right">
-                    <a title="Shuffle Queue" id="shuffle" onclick="shuffle()"><i class="fa-solid fa-shuffle fa-fw"></i></a>
-                    <a title="View Queue" id="queue"><i class="fa-solid fa-bars fa-fw"></i></a>
-                </div>
-            </div>
-
         </div>
     </div>
 
