@@ -8,6 +8,8 @@ const createWindow = () => {
         heigth: 600,
         minWidth: 325,
         minHeight: 500,
+        icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Vinyl_record.svg/2048px-Vinyl_record.svg.png',
+        
         title: "JoasMP",
         autoHideMenuBar: true,
         webPreferences: {
