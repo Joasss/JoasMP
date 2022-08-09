@@ -5,7 +5,9 @@
     <meta charset="UTF-8" />
     <script src="assets/js/selectFile.js"></script>
     <link rel="stylesheet" href="assets/css/main.css">
-    <title>JoasLP</title>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <link rel="stylesheet" href="assets/css/queue.css">
+    <title>JoasMP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://kit.fontawesome.com/d5db5a9cd6.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
@@ -13,10 +15,13 @@
 
 <body>
 
-    <div class="wrapper">
+    <div id="mainContent" class="main">
         <div class="img">
+            <a class="queueClose" style="top: 30px; left: 30px;" onclick="openFile()"><i
+                    class="fa-solid fa-folder-open fa-fw"></i> Open File(s)</a>
             <h3 class="app-title">JoasMP</h3>
-            <img id="albumCover" src="https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png"
+            <img style="background-color: rgba(255, 255, 255, 0.3); padding: 5px; border-radius: 100%;" id="albumCover"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Vinyl_record.svg/2048px-Vinyl_record.svg.png"
                 width="250px"><br>
         </div>
 
@@ -24,7 +29,7 @@
 
             <div class="song-info">
                 <p id="filename" class="filename"></p>
-                <h4 id="song" class="title">No Song Playing</h4>
+                <h3 id="song" class="title">No song playing.</h3>
                 <p id="artistAlbum" class="artist-album"></p>
             </div>
             <div class="bottom-controls">
@@ -64,11 +69,23 @@
                     <div class="right">
                         <a title="Shuffle Queue" id="shuffle" onclick="shuffle()"><i
                                 class="fa-solid fa-shuffle fa-fw"></i></a>
-                        <a title="View Queue" id="queue"><i class="fa-solid fa-bars fa-fw"></i></a>
+                        <a onclick="openQueue()" title="View Queue" id="queue"><i
+                                class="fa-solid fa-bars fa-fw"></i></a>
                     </div>
-                    <button class="button" onclick="openFile()">Play from File(s)</button>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <div id="mainQueue" class="queue">
+        <p class="queueClose" onclick="openQueue()"><i class="fa-solid fa-xmark fa-fw"></i></p>
+        <div class="centerQueue" id="queueList">
+
+            <h2>Queue:</h2>
+
+            <div class="queueItem">
+                <h3>No songs in queue/playing.</h3>
             </div>
         </div>
     </div>
@@ -78,6 +95,9 @@
         document.body.onkeyup = function (e) {
             if (e.keyCode == 32) {
                 playPause();
+            }
+            if (e.keyCode == 27) {
+                openQueue();
             }
         }
     </script>

@@ -8,6 +8,7 @@ let repeatMode = "off";
 let queue = [];
 let queuePos = 0;
 let volumeCount = 1;
+let queueOpen = false;
 
 async function openFile() {
     const file = await dialog.showOpenDialog(currentWindow, {
@@ -61,11 +62,13 @@ async function openFile() {
                         }
                         recordIcon.src = `data:${data.format};base64,${window.btoa(base64String)}`;
                     } else {
-                        recordIcon.src = "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png";
+                        recordIcon.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Vinyl_record.svg/2048px-Vinyl_record.svg.png";
                     }
 
                     setInterval(updatePoint, 1000);
                     setInterval(checkRepeat, 1000);
+
+                    updateQueue()
 
                 },
                 onerror: function (err) {
@@ -146,6 +149,7 @@ function setRepeat() {
     if (!player) return;
 
     const repeatButton = document.getElementById("repeat");
+    console.log(repeatMode)
     switch (repeatMode) {
         case "off":
             repeatMode = "queue";
@@ -153,7 +157,7 @@ function setRepeat() {
             break;
         case "queue":
             repeatMode = "song";
-            repeatButton.style.color = 'rb(169, 255, 179)';
+            repeatButton.style.color = 'rgb(255, 255, 139)';
             break;
         case "song":
             repeatMode = "off";
@@ -190,7 +194,7 @@ function checkRepeat() {
 function skipSong() {
     if (!player) return;
     if (queue[queuePos + 1]) return setQueuePosition(queuePos + 1);
-    if (!queue[queuePos + 1]) return setQueuePosition(0);
+    if (!queue[queuePos + 1] && repeatMode === "queue") return setQueuePosition(0);
 }
 
 function backSong() {
@@ -237,7 +241,7 @@ function setQueuePosition(position) {
             const fileText = document.getElementById("filename");
             if (tag.tags.title) titleText.innerHTML = tag.tags.title;
             fileText.innerHTML = basename(queue[position]).toUpperCase();
-            if (!tag.tags.title) titleText.innerHTML =  basename(queue[position], '.mp3' || '.wav');
+            if (!tag.tags.title) titleText.innerHTML = basename(queue[position], '.mp3' || '.wav');
 
             const artist = document.getElementById("artistAlbum");
             artist.innerHTML = "No artist/album found.";
@@ -260,9 +264,10 @@ function setQueuePosition(position) {
                 }
                 recordIcon.src = `data:${data.format};base64,${window.btoa(base64String)}`;
             } else {
-                recordIcon.src = "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png";
+                recordIcon.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Vinyl_record.svg/2048px-Vinyl_record.svg.png";
             }
 
+            updateQueue();
         },
         onerror: function (err) {
             console.log("There was an error reading the media tags!")
@@ -289,4 +294,54 @@ function stopPlaying() {
     total.innerHTML = "0:00";
     const recordIcon = document.getElementById("albumCover");
     recordIcon.src = "https://dbdzm869oupei.cloudfront.net/img/vinylrugs/preview/18784.png"
+}
+
+function openQueue() {
+    const main = document.getElementById("mainContent");
+    const queue = document.getElementById("mainQueue");
+
+    if (queueOpen === true) { main.classList.toggle("visible"); queue.classList.toggle("hidden"); queueOpen = false; }
+    if (queueOpen === false) { main.classList.toggle("hidden"); queue.classList.toggle("visible"); queueOpen = false; }
+}
+
+function updateQueue() {
+    if (!player) return;
+
+    const queueList = document.getElementById("queueList");
+    queueList.innerHTML = "<h2>Queue:</h2>";
+
+    let array = queue.slice(queuePos);
+
+    for (let i = 0; i < array.length; i++) {
+        const song = array[i];
+
+        jsmt.read(song, {
+            onSuccess: function (tag) {
+
+                let artistAlbum;
+                artistAlbum = "No artist/album found.";
+                if (tag.tags.artist) artistAlbum = `${tag.tags.artist}`;
+                if (tag.tags.album) artistAlbum = `${tag.tags.album}`;
+                if (tag.tags.album && tag.tags.artist) artistAlbum = `${tag.tags.artist} - ${tag.tags.album}`;
+
+                $('#queueList').append(`
+                <div class="queueItem">
+                    <p class="filename">${basename(song)}</p>
+                    <h3 style="margin: 10px; overflow: hidden;" class="title">${tag.tags.title ? tag.tags.title : basename(song, '.mp3' || '.wav')}</h3>
+                    <p class="artist-album">${artistAlbum}</p>
+                </div>`)
+            },
+            onerror: function (err) {
+                console.log("There was an error reading the media tags!")
+            }
+        });
+
+    }
+
+    if (array.length === 0) {
+        $('#queueList').append(`
+        <div class="queueItem">
+            <h3 style="margin: 10px;" class="title">No Songs Playing</h3>
+        </div>`)
+    }
 }

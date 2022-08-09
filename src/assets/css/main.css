@@ -39,7 +39,7 @@ body {
     background-color: rgba(255, 255, 255, 0.13);
 }
 
-.main a {
+.main-controls a {
     font-size: 40px !important;
 }
 
@@ -126,10 +126,10 @@ body {
 }
 
 .filename {
-    margin: 5px;
+    margin: 3px;
     color: rgb(190, 190, 190);
-    font-weight: bold;
     text-align: center;
+    font-size: small;
 }
 
 .title {
@@ -143,5 +143,6 @@ body {
     align-items: center;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 0;
     width: fit-content;
 }
