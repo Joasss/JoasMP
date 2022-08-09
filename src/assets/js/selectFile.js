@@ -223,6 +223,7 @@ async function shuffle() {
     }
     queuePos = 0;
     queue = await shuffleArray(queue);
+    updateQueue();
 }
 
 function setQueuePosition(position) {
